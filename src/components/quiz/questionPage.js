@@ -3,6 +3,7 @@ import { db, storage } from "../../firebase/firebase";
 import { Form, Row, Col, Container } from "react-bootstrap";
 import { FlagOutlined, Flag } from "@material-ui/icons";
 import { show_latex } from "./latex";
+import {changeQuestion} from "../../actions/questions"
 
 class QuestionPage extends Component {
   _isMounted = false;
@@ -19,7 +20,7 @@ class QuestionPage extends Component {
     this.questioncol = process.env.REACT_APP_SENIOR_DB;
     this.usercol = process.env.REACT_APP_USER_DB;
     this.disconnectUser = function () {}; // realtime connection to firebase
-    this.getQuestion = this.getQuestion.bind(this); // get question from questions collection and create observable from user collection
+    this.getQuesthis.state.question.idtion = this.getQuestion.bind(this); // get question from questions collection and create observable from user collection
     this.saveAnswer = this.saveAnswer.bind(this); // save answer on click
     this.changeQuestion = this.changeQuestion.bind(this); // next and previous buttons
     this.unselect = this.unselect.bind(this); // clear choices as some questions need not be answered
@@ -30,12 +31,12 @@ class QuestionPage extends Component {
     this._isMounted = true;
     this.questioncol = this.props.questioncol;
     this.usercol = this.props.usercol;
-    this.getQuestion(this.props.question);
+    this.getQuestion(this.props.dashboard.question);
   }
   componentDidUpdate(oldProps) {
     // this function updates the question page when dashboard buttons changes prop.question
 
-    let id = this.props.question;
+    let id = this.props.dashboard.question;
     if (oldProps.question !== id && id) {
       // this._isMounted = false;
       // this._isMounted = true;
@@ -207,7 +208,7 @@ class QuestionPage extends Component {
               </button>
             </Col>
             <Col>
-              <button onClick={() => this.changeQuestion(this.props.number + 1)}>{this.props.number >= this.props.length - 1 ? "Submit" : "Next>"}</button>
+              <button onClick={() => this.props.changeQuestion(this.props.number + 1)}>{this.props.number >= this.props.length - 1 ? "Submit" : "Next>"}</button>
             </Col>
           </Row>
         </Container>
@@ -215,4 +216,14 @@ class QuestionPage extends Component {
     );
   }
 }
-export default QuestionPage;
+const mapStateToProps=(state)=>{
+  return{
+    dashboard:state.question
+  }
+}
+const mapDispatchToProps=(dispatch)=>{
+   return{
+     changeQuestion:(num)=>dispatch(changeQuestion(num)),
+   }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(QuestionPage)

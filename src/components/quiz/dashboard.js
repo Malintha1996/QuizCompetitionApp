@@ -275,12 +275,12 @@ class Dashboard extends Component {
             </Row>
           ) : (
             <QuestionPage
-              question={this.state.question.id}
-              user={this.state.userid}
+              // question={this.state.question.id}
+              // user={this.state.userid}
               usercol={this.usercol}
               questioncol={this.questioncol}
-              number={this.state.number}
-              changeQuestion={this.changeQuestion}
+              // number={this.state.number}
+              // changeQuestion={this.changeQuestion}
               submitAll={this.submitAll}
               lang={this.state.lang}
               length={this.state.questions.length}
